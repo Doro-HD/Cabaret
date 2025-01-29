@@ -5,6 +5,9 @@ import { encodeBase64url, encodeHexLowerCase } from '@oslojs/encoding';
 import { type Session } from './db/schemas/session/schema';
 import * as sessionHandler from './db/schemas/session/sessionHandler';
 import type { User } from './db/schemas/user/schema';
+import * as argon2 from 'argon2';
+
+// session
 
 const DAY_IN_MS = 1000 * 60 * 60 * 24;
 
@@ -81,4 +84,26 @@ export function deleteSessionTokenCookie(event: RequestEvent): void {
 	event.cookies.delete(sessionCookieName, {
 		path: '/'
 	});
+}
+
+// password
+
+export async function hahsPassword(password: string): Promise<{ success: true, hashedPassword: string } | { success: false }> {
+	try {
+		const hash = await argon2.hash(password);
+
+		return { success: true, hashedPassword: hash };
+	} catch {
+		return { success: false };
+	}
+}
+
+export async function verifyPassword(hashedPassword: string, password: string): Promise<{ success: true, isSame: boolean } | { success: false }> {
+	try {
+		const isSame = await argon2.verify(hashedPassword, password);
+
+		return { success: true, isSame };
+	} catch {
+		return { success: false };
+	}
 }
