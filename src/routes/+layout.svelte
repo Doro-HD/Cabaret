@@ -4,8 +4,8 @@
 	let { children } = $props();
 </script>
 
-<div class='flex flex-col h-screen'>
-	<div class="flex justify-between border-b-2 px-2 sticky top-0 shadow">
+<div class="flex h-screen flex-col">
+	<div class="sticky top-0 flex justify-between border-b-2 px-2 shadow">
 		<a class="text-3xl font-bold" href="/">Carbaret</a>
 
 		<div class="flex place-items-center gap-x-2">
@@ -15,7 +15,7 @@
 		</div>
 	</div>
 
-	<div class='flex-1 overflow-auto'>
+	<div class="flex-1 overflow-auto">
 		{@render children()}
 	</div>
 </div>

@@ -20,7 +20,10 @@ export function generateSessionToken(): string {
 	return token;
 }
 
-export async function createSession(token: string, userId: string): Promise<{ success: true, session: Session } | { success: false }> {
+export async function createSession(
+	token: string,
+	userId: string
+): Promise<{ success: true; session: Session } | { success: false }> {
 	const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
 	const session: Session = {
 		id: sessionId,
@@ -35,7 +38,9 @@ export async function createSession(token: string, userId: string): Promise<{ su
 	return { success: true, session };
 }
 
-export async function validateSessionToken(token: string): Promise<{ session: Session | null, user: User | null }> {
+export async function validateSessionToken(
+	token: string
+): Promise<{ session: Session | null; user: User | null }> {
 	const sessionId = encodeHexLowerCase(sha256(new TextEncoder().encode(token)));
 	const result = await sessionHandler.findSession(sessionId);
 
@@ -88,7 +93,9 @@ export function deleteSessionTokenCookie(event: RequestEvent): void {
 
 // password
 
-export async function hahsPassword(password: string): Promise<{ success: true, hashedPassword: string } | { success: false }> {
+export async function hahsPassword(
+	password: string
+): Promise<{ success: true; hashedPassword: string } | { success: false }> {
 	try {
 		const hash = await argon2.hash(password);
 
@@ -98,7 +105,10 @@ export async function hahsPassword(password: string): Promise<{ success: true, h
 	}
 }
 
-export async function verifyPassword(hashedPassword: string, password: string): Promise<{ success: true, isSame: boolean } | { success: false }> {
+export async function verifyPassword(
+	hashedPassword: string,
+	password: string
+): Promise<{ success: true; isSame: boolean } | { success: false }> {
 	try {
 		const isSame = await argon2.verify(hashedPassword, password);
 

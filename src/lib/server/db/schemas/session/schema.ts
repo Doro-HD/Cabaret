@@ -12,17 +12,17 @@ export const sessionTable = sqliteTable('session', {
 });
 
 export const sessionRelations = relations(sessionTable, ({ one }) => {
-    return {
-        user: one(userTable, {
-            fields: [sessionTable.userId],
-            references: [userTable.id]
-        })
-    }
+	return {
+		user: one(userTable, {
+			fields: [sessionTable.userId],
+			references: [userTable.id]
+		})
+	};
 });
 
 export const sessionSelectSchema = createSelectSchema(sessionTable);
 export const sessionInsertSchema = createInsertSchema(sessionTable);
-export const sessionUpdateSchema = createUpdateSchema(sessionTable).omit( { id: true });
+export const sessionUpdateSchema = createUpdateSchema(sessionTable).omit({ id: true });
 
 export type Session = z.infer<typeof sessionSelectSchema>;
 export type SessionInsert = z.infer<typeof sessionInsertSchema>;

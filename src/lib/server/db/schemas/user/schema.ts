@@ -12,19 +12,19 @@ export const userTable = sqliteTable('user', {
 });
 
 export const userRelations = relations(userTable, ({ many }) => {
-    return {
-        sessions: many(sessionTable)
-    }
-})
+	return {
+		sessions: many(sessionTable)
+	};
+});
 
 export const userSchema = createSelectSchema(userTable);
 export const userInsertSchema = createInsertSchema(userTable, {
-    email: schema => schema.email(),
-    password: schema => schema.min(8)
+	email: (schema) => schema.email(),
+	password: (schema) => schema.min(8)
 });
 export const userUpdateSchema = createUpdateSchema(userTable, {
-    email: schema => schema.email(),
-    password: schema => schema.min(8)
+	email: (schema) => schema.email(),
+	password: (schema) => schema.min(8)
 });
 
 export type User = z.infer<typeof userSchema>;

@@ -25,10 +25,10 @@ The basic form used for sign in and sign up
 	let password = $state('');
 </script>
 
-{#snippet field(name: string, type: 'text' | 'password', label?: string )}
+{#snippet field(name: string, type: 'text' | 'password', label?: string)}
 	<Label class="self-center">
 		{#if label}
-			{label}	
+			{label}
 		{:else}
 			{name[0].toUpperCase() + name.slice(1)}:
 		{/if}

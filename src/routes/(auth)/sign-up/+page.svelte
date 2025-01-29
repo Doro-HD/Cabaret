@@ -9,7 +9,7 @@
 	{/snippet}
 
 	{#snippet form()}
-		{@render field('confirm-password', 'password', 'Confirm password')}	
+		{@render field('confirm-password', 'password', 'Confirm password')}
 	{/snippet}
 
 	{#snippet footer()}

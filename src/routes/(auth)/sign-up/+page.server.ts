@@ -4,12 +4,23 @@ import { z } from 'zod';
 
 import type { Actions } from './$types';
 import { createUser } from '$lib/server/db/schemas/user/userHandler';
-import { createSession, generateSessionToken, hahsPassword, setSessionTokenCookie } from '$lib/server/auth';
+import {
+	createSession,
+	generateSessionToken,
+	hahsPassword,
+	setSessionTokenCookie
+} from '$lib/server/auth';
 import { userInsertSchema } from '$lib/server/db/schemas/user/schema';
 
-const signUpSchema = userInsertSchema.omit({ id: true }).extend({
-	'confirm-password': z.string()
-}).refine(val => val.password === val['confirm-password'], { path: ['confirm'], message: 'Password must match' });
+const signUpSchema = userInsertSchema
+	.omit({ id: true })
+	.extend({
+		'confirm-password': z.string()
+	})
+	.refine((val) => val.password === val['confirm-password'], {
+		path: ['confirm'],
+		message: 'Password must match'
+	});
 
 export const actions: Actions = {
 	default: async (event) => {
@@ -45,7 +56,7 @@ export const actions: Actions = {
 			error(500);
 		}
 
-		setSessionTokenCookie(event, token, sessionResult.session.expiresAt)
+		setSessionTokenCookie(event, token, sessionResult.session.expiresAt);
 
 		return {};
 	}
