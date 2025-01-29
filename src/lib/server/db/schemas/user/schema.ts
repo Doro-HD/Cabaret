@@ -1,5 +1,7 @@
 import { relations } from 'drizzle-orm';
 import { sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { createInsertSchema, createSelectSchema, createUpdateSchema } from 'drizzle-zod';
+import { z } from 'zod';
 
 import { sessionTable } from '../session/schema';
 
@@ -15,4 +17,16 @@ export const userRelations = relations(userTable, ({ many }) => {
     }
 })
 
-export type User = typeof userTable.$inferSelect;
+export const userSchema = createSelectSchema(userTable);
+export const userInsertSchema = createInsertSchema(userTable, {
+    email: schema => schema.email(),
+    password: schema => schema.min(8)
+});
+export const userUpdateSchema = createUpdateSchema(userTable, {
+    email: schema => schema.email(),
+    password: schema => schema.min(8)
+});
+
+export type User = z.infer<typeof userSchema>;
+export type UserInsert = z.infer<typeof userInsertSchema>;
+export type UserUpdate = z.infer<typeof userUpdateSchema>;
