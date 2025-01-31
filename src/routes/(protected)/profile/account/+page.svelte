@@ -38,7 +38,7 @@
 		<form method="post" class="space-y-2" use:enhance>
 			<div class="flex place-items-center gap-x-2">
 				<Label>New Email</Label>
-				<Input type="text" name="email" class="w-72" value={user.email} />
+				<Input type="text" name="email" class="sm:w-72" value={user.email} />
 			</div>
 
 			<Button type="submit">Save new Email</Button>
@@ -55,7 +55,7 @@
 		<form method="post" class="space-y-2" use:enhance>
 			<div class="flex place-items-center gap-x-2">
 				<Label>New Username</Label>
-				<Input type="text" name="username" class="w-72" value={user.username} />
+				<Input type="text" name="username" class="sm:w-72" value={user.username} />
 			</div>
 
 			<Button type="submit">Save new Username</Button>
@@ -68,7 +68,7 @@
 		<form method="post" class="space-y-2">
 			<div class="flex place-items-center gap-x-2">
 				<Label>New Password</Label>
-				<Input type="password" name="password" class="w-72" />
+				<Input type="password" name="password" class="sm:w-72" />
 			</div>
 
 			<Button>Save new Password</Button>

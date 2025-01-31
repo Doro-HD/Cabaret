@@ -36,7 +36,7 @@ The basic form used for sign in and sign up
 	<Input class="col-span-3" {type} {name} />
 {/snippet}
 
-<Card.Root class='w-full sm:w-80'>
+<Card.Root class="w-full sm:w-80">
 	<Card.Header>
 		<Card.Title>
 			{@render title()}

@@ -20,25 +20,27 @@
 {/snippet}
 
 <div class="flex h-full gap-x-2">
-	<div class="h-full flex place-items-center">
-		<div class='h-full hidden sm:block w-0 sm:w-36 rounded border-2 p-2 shadow'>
+	<div>
+		<div class="hidden h-full w-0 rounded border-2 p-2 shadow sm:block sm:w-36">
 			{@render sidebarLinks()}
 		</div>
 
-		<Sheet.Root>
-			<Sheet.Trigger asChild let:builder>
-				<Button builders={[builder]} size='icon' class='sm:hidden'>
-					<ChevronRight></ChevronRight>
-				</Button>
-			</Sheet.Trigger>
+		<div class="sm:hidden grid h-full place-items-center border-r-2 pe-2">
+			<Sheet.Root>
+				<Sheet.Trigger asChild let:builder>
+					<Button builders={[builder]} size="icon" variant="outline" class="sm:hidden">
+						<ChevronRight></ChevronRight>
+					</Button>
+				</Sheet.Trigger>
 
-			<Sheet.Content side='left' class='flex flex-col'>
-				{@render sidebarLinks()}
-			</Sheet.Content>
-		</Sheet.Root>
+				<Sheet.Content side="left" class="flex flex-col">
+					{@render sidebarLinks()}
+				</Sheet.Content>
+			</Sheet.Root>
+		</div>
 	</div>
 
-	<div class="w-full">
+	<div class="sm:pe-0 w-full pe-2">
 		{@render children()}
 	</div>
 </div>
