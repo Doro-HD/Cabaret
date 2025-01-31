@@ -78,15 +78,19 @@ export async function invalidateSession(sessionId: string): Promise<boolean> {
 	return wasDeleted;
 }
 
-export function setSessionTokenCookie(event: RequestEvent, token: string, expiresAt: Date): void {
-	event.cookies.set(sessionCookieName, token, {
+export function setSessionTokenCookie(
+	cookies: RequestEvent['cookies'],
+	token: string,
+	expiresAt: Date
+): void {
+	cookies.set(sessionCookieName, token, {
 		expires: expiresAt,
 		path: '/'
 	});
 }
 
-export function deleteSessionTokenCookie(event: RequestEvent): void {
-	event.cookies.delete(sessionCookieName, {
+export function deleteSessionTokenCookie(cookies: RequestEvent['cookies']): void {
+	cookies.delete(sessionCookieName, {
 		path: '/'
 	});
 }

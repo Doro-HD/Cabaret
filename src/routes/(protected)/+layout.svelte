@@ -7,6 +7,6 @@
 	const { children }: Props = $props();
 </script>
 
-<div class="grid h-full place-items-center px-2 sm:px-0">
+<div class="h-full p-2">
 	{@render children()}
 </div>

@@ -8,6 +8,7 @@ import { sessionTable } from '../session/schema';
 export const userTable = sqliteTable('user', {
 	id: text('id').primaryKey(),
 	email: text('email').notNull(),
+	username: text('username'),
 	password: text('password').notNull()
 });
 
@@ -24,6 +25,7 @@ export const userInsertSchema = createInsertSchema(userTable, {
 });
 export const userUpdateSchema = createUpdateSchema(userTable, {
 	email: (schema) => schema.email(),
+	username: (schema) => schema.min(2),
 	password: (schema) => schema.min(8)
 });
 

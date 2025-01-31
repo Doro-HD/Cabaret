@@ -1,4 +1,4 @@
-import { error, fail } from '@sveltejs/kit';
+import { error, fail, redirect } from '@sveltejs/kit';
 import cuid2 from '@paralleldrive/cuid2';
 import { z } from 'zod';
 
@@ -23,9 +23,9 @@ const signUpSchema = userInsertSchema
 	});
 
 export const actions: Actions = {
-	default: async (event) => {
+	default: async ({ request, cookies }) => {
 		// validate form data
-		const formData = await event.request.formData();
+		const formData = await request.formData();
 		const schemaResult = signUpSchema.safeParse(Object.fromEntries(formData));
 
 		if (!schemaResult.success) {
@@ -56,8 +56,8 @@ export const actions: Actions = {
 			error(500);
 		}
 
-		setSessionTokenCookie(event, token, sessionResult.session.expiresAt);
+		setSessionTokenCookie(cookies, token, sessionResult.session.expiresAt);
 
-		return {};
+		redirect(303, '/profile');
 	}
 };

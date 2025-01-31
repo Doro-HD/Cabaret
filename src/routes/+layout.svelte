@@ -1,17 +1,28 @@
 <script lang="ts">
-	import { Button } from '$lib/shad/components/ui/button';
+	import { enhance } from '$app/forms';
+	import type { Snippet } from 'svelte';
+	import type { LayoutProps } from './$types.js';
+
 	import '../app.css';
-	let { children } = $props();
+	import { Button } from '$lib/shad/components/ui/button';
+
+	let { data, children }: LayoutProps = $props();
 </script>
 
 <div class="flex h-screen flex-col">
-	<div class="sticky top-0 flex justify-between border-b-2 px-2 shadow">
+	<div class="sticky top-0 flex justify-between border-b-2 p-2 shadow">
 		<a class="text-3xl font-bold" href="/">Carbaret</a>
 
 		<div class="flex place-items-center gap-x-2">
-			<Button variant="link" href="/sign-in">Log in</Button>
+			{#if data.isSignedIn}
+				<form action="/sign-out" method="post" use:enhance>
+					<Button variant="ghost" type="submit">Sign out</Button>
+				</form>
+			{:else}
+				<Button variant="link" href="/sign-in">Log in</Button>
 
-			<Button variant="link" href="/sign-up">Sign up</Button>
+				<Button variant="link" href="/sign-up">Sign up</Button>
+			{/if}
 		</div>
 	</div>
 
