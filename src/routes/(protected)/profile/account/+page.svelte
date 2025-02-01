@@ -45,11 +45,11 @@
 	});
 </script>
 
-{#snippet section(field: Snippet, submitButtonText: string)}
-	<div class="border-b-2 pb-2">
-		<h1 class="text-xl font-bold">Email:</h1>
+{#snippet section(field: Snippet, title: string, submitButtonText: string)}
+	<div class="border-b-2 pb-2 space-y-2">
+		<h1 class="text-xl font-bold">{title}:</h1>
 
-		<form method="post" class="space-y-2" use:enhance={enhancer}>
+		<form method="post" class="space-y-4" use:enhance={enhancer}>
 			<div class="flex place-items-center gap-x-2">
 				{@render field()}
 			</div>
@@ -59,13 +59,13 @@
 	</div>
 {/snippet}
 
-<div class="w-full">
+<div class="w-full space-y-2">
 	{#snippet emailField()}
 		<Label>New Email</Label>
 		<Input type="text" name="email" class="sm:w-72" value={user.email} disabled={isSubmitting} />
 	{/snippet}
 
-	{@render section(emailField, 'Save new Email')}
+	{@render section(emailField, 'Email', 'Save new Email')}
 
 
 	{#snippet usernameField()}
@@ -73,7 +73,7 @@
 		<Input type="text" name="username" class="sm:w-72" value={user.username} disabled={isSubmitting} />
 	{/snippet}
 
-	{@render section(usernameField, 'Save new Username')}
+	{@render section(usernameField, 'Username', 'Save new Username')}
 
 
 	{#snippet passwordField()}
@@ -81,6 +81,6 @@
 		<Input type="password" name="password" class="sm:w-72" disabled={isSubmitting} />
 	{/snippet}
 	
-	{@render section(passwordField, 'Save new Password')}
+	{@render section(passwordField, 'Password', 'Save new Password')}
 
 </div>
