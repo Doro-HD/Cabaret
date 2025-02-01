@@ -1,9 +1,9 @@
 import { eq } from 'drizzle-orm';
 
 import { db } from '../..';
-import { userTable, type User, type UserUpdate } from './schema';
+import { userTable, type User, type UserInsert, type UserUpdate } from './schema';
 
-export async function createUser(user: User): Promise<boolean> {
+export async function createUser(user: UserInsert): Promise<boolean> {
 	try {
 		await db.insert(userTable).values(user);
 

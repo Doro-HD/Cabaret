@@ -1,16 +1,38 @@
 <script lang="ts">
+	import type { PageProps } from './$types';
+
 	import { Button } from '$lib/shad/components/ui/button';
-	import AuthForm from '../AuthForm.svelte';
+	import AuthForm, { formError } from '../AuthForm.svelte';
+
+	const { form }: PageProps = $props();
+
+	let formErrorMsg: string | undefined = $state(undefined);
+
+	$effect(() => {
+		if (!form) {
+			return;
+		}
+
+		formErrorMsg = form.formError;
+	});
 </script>
 
-<AuthForm formId="sign-in">
+<AuthForm formId="sign-in" errors={{ emailError: undefined, passwordError: undefined}}>
 	{#snippet title()}
 		Log in
 	{/snippet}
 
-	{#snippet footer()}
-		<Button variant="link" href="/sign-up">Dont have an account?</Button>
+	{#snippet form()}
+		{#if formErrorMsg}
+			{@render formError(formErrorMsg)}	
+		{/if}
+	{/snippet}
 
-		<Button form="sign-in" type="submit">Log in</Button>
+	{#snippet footer(isSubmitting)}
+		<Button variant="link" href="/sign-up" aria-disabled={isSubmitting}
+			>Dont have an account?</Button
+		>
+
+		<Button form="sign-in" type="submit" disabled={isSubmitting}>Log in</Button>
 	{/snippet}
 </AuthForm>

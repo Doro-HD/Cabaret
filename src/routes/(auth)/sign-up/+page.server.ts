@@ -18,8 +18,8 @@ const signUpSchema = userInsertSchema
 		'confirm-password': z.string()
 	})
 	.refine((val) => val.password === val['confirm-password'], {
-		path: ['confirm'],
-		message: 'Password must match'
+		path: ['confirm-password'],
+		message: 'Passwords must match'
 	});
 
 export const actions: Actions = {
@@ -32,7 +32,11 @@ export const actions: Actions = {
 			const errors = schemaResult.error.format();
 
 			return fail(400, {
-				formErrors: { ...errors }
+				formErrors: {
+					emailError: errors.email?._errors.join(','),
+					passwordError: errors.password?._errors.join(','),
+					confirmPasswordError: errors['confirm-password']?._errors.join(',')
+				}
 			});
 		}
 		const { email, password } = schemaResult.data;

@@ -19,7 +19,7 @@ export const actions: Actions = {
 
 		const schemaResult = await signInSchema.safeParse(Object.fromEntries(formData));
 		if (!schemaResult.success) {
-			return {};
+			error(400);
 		}
 		const { email, password } = schemaResult.data;
 
@@ -29,8 +29,9 @@ export const actions: Actions = {
 			error(500);
 		}
 
+		const errorMsg = 'Incorrect email or password';
 		if (!userResult.user) {
-			return fail(404);
+			return fail(404, { formError: errorMsg });
 		}
 		const user = userResult.user;
 
@@ -40,7 +41,7 @@ export const actions: Actions = {
 		}
 
 		if (!passwordResult.isSame) {
-			return fail(404);
+			return fail(400, { formError: errorMsg });
 		}
 
 		const token = generateSessionToken();

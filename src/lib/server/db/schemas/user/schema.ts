@@ -7,7 +7,7 @@ import { sessionTable } from '../session/schema';
 
 export const userTable = sqliteTable('user', {
 	id: text('id').primaryKey(),
-	email: text('email').notNull(),
+	email: text('email').notNull().unique(),
 	username: text('username'),
 	password: text('password').notNull()
 });

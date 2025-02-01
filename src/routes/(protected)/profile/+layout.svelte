@@ -25,7 +25,7 @@
 			{@render sidebarLinks()}
 		</div>
 
-		<div class="sm:hidden grid h-full place-items-center border-r-2 pe-2">
+		<div class="grid h-full place-items-center border-r-2 pe-2 sm:hidden">
 			<Sheet.Root>
 				<Sheet.Trigger asChild let:builder>
 					<Button builders={[builder]} size="icon" variant="outline" class="sm:hidden">
@@ -40,7 +40,7 @@
 		</div>
 	</div>
 
-	<div class="sm:pe-0 w-full pe-2">
+	<div class="w-full pe-2 sm:pe-0">
 		{@render children()}
 	</div>
 </div>
