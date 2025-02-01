@@ -3,7 +3,7 @@ import cuid2 from '@paralleldrive/cuid2';
 import { z } from 'zod';
 
 import type { Actions } from './$types';
-import { createUser } from '$lib/server/db/schemas/user/userHandler';
+import { createUser, findUserByEmail } from '$lib/server/db/schemas/user/userHandler';
 import {
 	createSession,
 	generateSessionToken,
@@ -41,6 +41,16 @@ export const actions: Actions = {
 		}
 		const { email, password } = schemaResult.data;
 
+		// check if user already exists
+		const existingUser = await findUserByEmail(email);
+		if (existingUser) {
+			return fail(400, {
+				formErrors: {
+					emailError: 'An user with that email already exists'
+				}
+			})
+		}
+
 		// create user
 		const passwordResult = await hahsPassword(password);
 		if (!passwordResult.success) {
@@ -48,7 +58,8 @@ export const actions: Actions = {
 		}
 
 		const id = cuid2.createId();
-		const wasUserCreated = createUser({ id, email, password: passwordResult.hashedPassword });
+		const wasUserCreated = await createUser({ id, email, password: passwordResult.hashedPassword });
+		console.log(wasUserCreated);
 		if (!wasUserCreated) {
 			error(500);
 		}

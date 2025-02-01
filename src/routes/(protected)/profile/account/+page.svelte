@@ -1,5 +1,7 @@
 <script lang="ts">
+	import type { SubmitFunction } from '@sveltejs/kit';
 	import { enhance } from '$app/forms';
+	import { type Snippet } from 'svelte';
 	import type { PageProps } from './$types';
 
 	import { toast } from 'svelte-sonner';
@@ -11,6 +13,18 @@
 	const { data, form }: PageProps = $props();
 
 	const user = $derived(data.user);
+	
+	let isSubmitting = $state(false);
+
+	const enhancer: SubmitFunction = () => {
+		isSubmitting = true;
+
+		return ({ update }) => {
+			isSubmitting = false;
+
+			update();
+		}
+	}
 
 	$effect(() => {
 		if (!form) {
@@ -31,47 +45,42 @@
 	});
 </script>
 
-<div class="w-full">
+{#snippet section(field: Snippet, submitButtonText: string)}
 	<div class="border-b-2 pb-2">
 		<h1 class="text-xl font-bold">Email:</h1>
 
-		<form method="post" class="space-y-2" use:enhance>
+		<form method="post" class="space-y-2" use:enhance={enhancer}>
 			<div class="flex place-items-center gap-x-2">
-				<Label>New Email</Label>
-				<Input type="text" name="email" class="sm:w-72" value={user.email} />
+				{@render field()}
 			</div>
 
-			<Button type="submit">Save new Email</Button>
+			<Button type="submit" disabled={isSubmitting}>{submitButtonText}</Button>
 		</form>
 	</div>
+{/snippet}
 
-	<div class="border-b-2 pb-2">
-		<h1 class="text-xl font-bold">Username:</h1>
-		<p>
-			You can set a username if you so desire, it will be used exclusively for displaying how you
-			choose to identify
-		</p>
+<div class="w-full">
+	{#snippet emailField()}
+		<Label>New Email</Label>
+		<Input type="text" name="email" class="sm:w-72" value={user.email} disabled={isSubmitting} />
+	{/snippet}
 
-		<form method="post" class="space-y-2" use:enhance>
-			<div class="flex place-items-center gap-x-2">
-				<Label>New Username</Label>
-				<Input type="text" name="username" class="sm:w-72" value={user.username} />
-			</div>
+	{@render section(emailField, 'Save new Email')}
 
-			<Button type="submit">Save new Username</Button>
-		</form>
-	</div>
 
-	<div class="border-b-2 pb-2">
-		<h1 class="text-xl font-bold">Password:</h1>
+	{#snippet usernameField()}
+		<Label>New Username</Label>
+		<Input type="text" name="username" class="sm:w-72" value={user.username} disabled={isSubmitting} />
+	{/snippet}
 
-		<form method="post" class="space-y-2">
-			<div class="flex place-items-center gap-x-2">
-				<Label>New Password</Label>
-				<Input type="password" name="password" class="sm:w-72" />
-			</div>
+	{@render section(usernameField, 'Save new Username')}
 
-			<Button>Save new Password</Button>
-		</form>
-	</div>
+
+	{#snippet passwordField()}
+		<Label>New Password</Label>
+		<Input type="password" name="password" class="sm:w-72" disabled={isSubmitting} />
+	{/snippet}
+	
+	{@render section(passwordField, 'Save new Password')}
+
 </div>

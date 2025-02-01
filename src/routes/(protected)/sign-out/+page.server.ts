@@ -5,7 +5,6 @@ import { deleteSession } from '$lib/server/db/schemas/session/sessionHandler';
 
 export const actions: Actions = {
 	default: async ({ locals }) => {
-		console.log('Hello from sign-out');
 		if (!locals.session) {
 			return;
 		}

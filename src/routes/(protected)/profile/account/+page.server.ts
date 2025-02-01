@@ -3,6 +3,7 @@ import type { PageServerLoad, Actions } from './$types';
 
 import { userUpdateSchema } from '$lib/server/db/schemas/user/schema';
 import { updateUser } from '$lib/server/db/schemas/user/userHandler';
+import { hahsPassword } from '$lib/server/auth';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (!locals.session || !locals.user) {
@@ -19,7 +20,7 @@ type UpdateMessage = { message: { type: 'success' | 'error'; content: string } }
 export const actions: Actions = {
 	default: async ({ request, locals }): Promise<UpdateMessage | ActionFailure<UpdateMessage>> => {
 		if (!locals.session || !locals.user) {
-			return error(401);
+			error(401);
 		}
 
 		const formData = await request.formData();
@@ -27,8 +28,19 @@ export const actions: Actions = {
 		if (!schemaResult.success) {
 			return fail(400, { message: { type: 'error', content: 'Could not update your account' } });
 		}
+		const data = schemaResult.data;
 
-		const wasUpdated = updateUser(locals.user.id, schemaResult.data);
+		let password = undefined;
+		if (data.password) {
+			const passwordResult = await hahsPassword(data.password);	
+			if (!passwordResult.success) {
+				error(500);
+			}
+
+			password = passwordResult.hashedPassword;
+		}
+
+		const wasUpdated = updateUser(locals.user.id, { ...data, password });
 		if (!wasUpdated) {
 			error(500);
 		}
