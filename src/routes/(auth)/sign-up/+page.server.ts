@@ -42,8 +42,12 @@ export const actions: Actions = {
 		const { email, password } = schemaResult.data;
 
 		// check if user already exists
-		const existingUser = await findUserByEmail(email);
-		if (existingUser) {
+		const existingUserResult = await findUserByEmail(email);
+		if (!existingUserResult.success) {
+			error(500);
+		}
+
+		if (existingUserResult.user) {
 			return fail(400, {
 				formErrors: {
 					emailError: 'An user with that email already exists'

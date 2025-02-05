@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { ChevronRight } from 'lucide-svelte';
 
-	import { Button } from '$lib/shad/components/ui/button/';
+	import { Button, buttonVariants } from '$lib/shad/components/ui/button/';
 	import { Toaster } from '$lib/shad/components/ui/sonner';
 	import type { Snippet } from 'svelte';
 	import * as Sheet from '$lib/shad/components/ui/sheet';
@@ -27,10 +27,8 @@
 
 		<div class="grid h-full place-items-center border-r-2 pe-2 sm:hidden">
 			<Sheet.Root>
-				<Sheet.Trigger asChild let:builder>
-					<Button builders={[builder]} size="icon" variant="outline" class="sm:hidden">
-						<ChevronRight></ChevronRight>
-					</Button>
+				<Sheet.Trigger class={buttonVariants({ size: 'icon', variant: 'outline', className: 'sm:hidden' })}>
+					<ChevronRight></ChevronRight>
 				</Sheet.Trigger>
 
 				<Sheet.Content side="left" class="flex flex-col">
