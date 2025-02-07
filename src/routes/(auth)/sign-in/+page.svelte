@@ -34,5 +34,9 @@
 		>
 
 		<Button form="sign-in" type="submit" disabled={isSubmitting}>Log in</Button>
+
+		<Button href='/sign-in/oauth/github' class='col-span-2' variant='secondary'>
+			Log in with Github
+		</Button>
 	{/snippet}
 </AuthForm>

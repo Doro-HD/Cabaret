@@ -1,5 +1,5 @@
 import { redirect, type Handle } from '@sveltejs/kit';
-import * as auth from '$lib/server/auth.js';
+import * as auth from '$lib/server/auth/index.js';
 import { sequence } from '@sveltejs/kit/hooks';
 
 const handleAuth: Handle = async ({ event, resolve }) => {

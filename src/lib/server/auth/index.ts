@@ -2,9 +2,9 @@ import type { RequestEvent } from '@sveltejs/kit';
 import { sha256 } from '@oslojs/crypto/sha2';
 import { encodeBase64url, encodeHexLowerCase } from '@oslojs/encoding';
 
-import { type Session } from './db/schemas/session/schema';
-import * as sessionHandler from './db/schemas/session/sessionHandler';
-import type { User } from './db/schemas/user/schema';
+import { type Session } from '../db/schemas/session/schema';
+import * as sessionHandler from '../db/schemas/session/sessionHandler';
+import type { User } from '../db/schemas/user/schema';
 import * as argon2 from 'argon2';
 
 // session

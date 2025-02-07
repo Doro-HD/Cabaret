@@ -84,7 +84,7 @@ The basic form used for sign in and sign up
 		</form>
 	</Card.Content>
 
-	<Card.Footer class="flex justify-between gap-x-2">
+	<Card.Footer class="grid grid-cols-2 gap-4">
 		{@render footer(isSubmitting)}
 	</Card.Footer>
 </Card.Root>
