@@ -35,10 +35,11 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		}
 	});
 	const githubUser = await githubUserResponse.json();
+
 	const githubUserId = githubUser.id;
 	const githubUsername = githubUser.login;
 
-	// TODO: Replace this with your own DB query.
+	
 	const existingUserResult = await findUserByGithubId(githubUserId);
     if (!existingUserResult.success) {
         return new Response(null, {
@@ -64,7 +65,17 @@ export async function GET(event: RequestEvent): Promise<Response> {
 		});
 	}
 
-	const userResult = await createUserViaGithub(githubUserId, githubUsername);
+	// retrieve user github email
+	const emailResponse = await event.fetch('https://api.github.com/user/emails', {
+		headers: {
+			'Authorization': `Bearer ${tokens.data.access_token}`
+		}
+	});
+	const emails = await emailResponse.json();
+	const primaryEmail = emails.filter(email => email.primary)[0];
+
+	const userResult = await createUserViaGithub(githubUserId, primaryEmail.email, githubUsername);
+	console.log(userResult)
     if (!userResult.success) {
         return new Response(null, {
             status: 500

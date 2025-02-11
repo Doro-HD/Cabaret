@@ -2,7 +2,6 @@ import { eq } from 'drizzle-orm';
 
 import { db } from '../..';
 import { userTable, type User, type UserInsert, type UserUpdate } from './schema';
-import cuid2 from '@paralleldrive/cuid2';
 
 export async function createUser(user: UserInsert): Promise<boolean> {
 	try {
@@ -14,15 +13,15 @@ export async function createUser(user: UserInsert): Promise<boolean> {
 	}
 }
 
-export async function createUserViaGithub(ghId: string, ghUsername: string): Promise<{ success: true, user: UserInsert } | { success: false }> {
+export async function createUserViaGithub(ghId: string, email: string, ghUsername: string): Promise<{ success: true, user: UserInsert } | { success: false }> {
 	try {
-		const id = cuid2.createId();
-		const user: UserInsert = { id, email: '', password: '', ghId, ghUsername };
+		const user: UserInsert = { id: ghId, email, username: ghUsername, password: '' };
 
 		await db.insert(userTable).values(user);
 
 		return { success: true, user };
-	} catch {
+	} catch (e) {
+		console.log(e)
 		return { success: false };
 	}
 }
@@ -44,7 +43,7 @@ export async function findUserByEmail(
 export async function findUserByGithubId(ghId: string): Promise<{ success: true, user?: User } | { success: false }> {
 	try {
 		const user = await db.query.userTable.findFirst({
-			where: (user, { eq }) => eq(user.ghId, ghId)
+			where: (user, { eq }) => eq(user.id, ghId)
 		});
 
 		return { success: true, user };

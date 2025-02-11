@@ -10,9 +10,6 @@ export const userTable = sqliteTable('user', {
 	email: text('email').notNull().unique(),
 	username: text('username'),
 	password: text('password').notNull(),
-	//github
-	ghId: text('gh_id').unique(),
-	ghUsername: text('gh_username')
 });
 
 export const userRelations = relations(userTable, ({ many }) => {
